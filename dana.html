@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Rekening DANA</title>
+</head>
+<body>
+    <h2>Cek Rekening DANA</h2>
+    <label for="account_number">Nomor DANA:</label>
+    <input type="text" id="account_number" placeholder="Masukkan nomor DANA">
+    
+    <button onclick="cekRekeningDANA()">Cek</button>
+    
+    <h3>Hasil:</h3>
+    <pre id="result"></pre>
+
+    <script>
+        async function cekRekeningDANA() {
+            const accountNumber = document.getElementById('account_number').value;
+            const apiKey = "e77513b0c38411efb365bc24113c8a5eVEon0UlmHV"; // API Key langsung di sini
+
+            const url = `https://api-checker-developer.p.rapidapi.com/api/checker?action=getAccount&bank_code=dana&nomor_rekening=${accountNumber}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "X-RapidAPI-Key": apiKey, 
+                        "X-RapidAPI-Host": "api-checker-developer.p.rapidapi.com"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                document.getElementById('result').textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                document.getElementById('result').textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
